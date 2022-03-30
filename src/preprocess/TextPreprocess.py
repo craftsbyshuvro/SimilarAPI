@@ -47,12 +47,12 @@ class TextPreprocess:
 
         return review
 
-    def process_api_name(self, api_name):
+    def process_method_name(self, api_name):
 
-        for prefix in AppConfig.LIBRARY_COMMON_PREFIX:
-            if prefix in api_name:
-                api_name = str(api_name).replace(prefix, "")
-                break
+        # for prefix in AppConfig.LIBRARY_COMMON_PREFIX:
+        #     if prefix in api_name:
+        #         api_name = str(api_name).replace(prefix, "")
+        #         break
 
         api_name_section = api_name.split(".")
         processed_api_name = ""
@@ -65,4 +65,20 @@ class TextPreprocess:
             processed_api_name = processed_api_name.strip().lower()
 
         return processed_api_name
-    # Test Commit
+
+    def process_fully_qualified_api_name(self, fully_q_api_name):
+
+        fully_q_api_name = str(fully_q_api_name).replace(':', '.')
+
+        api_name_section = fully_q_api_name.split(".")
+        api_name_section = api_name_section[-2:]
+        processed_api_name = ""
+
+        for name_part in api_name_section:
+            only_char = re.sub('\W+', '', name_part)
+            camel_case = re.sub('(?<=[a-z])(?=[A-Z])', ' ', only_char).split(' ')
+            single_string = ' '.join(camel_case)
+            processed_api_name = processed_api_name + " " + single_string
+            processed_api_name = processed_api_name.strip().lower()
+
+        return processed_api_name

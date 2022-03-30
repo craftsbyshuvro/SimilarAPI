@@ -1,5 +1,9 @@
 DB_CON_STRING = 'D:\Study\Final Project\Applications\MyFirstPlugin\SQLiteDB\SimilarAPISample.db'
 
+ALPHA = 0.3  # API Sequence Similarity Weight
+BETA = 0.5  # Method Name Similarity Weight
+GAMMA = 0.2  # Method Comment Similarity Weight
+
 LIBRARY_COMMON_PREFIX = ["org.geotools.", "org.apache.bcel.", "org.atmosphere.", "org.springframework.xd.",
                          "org.jdom2.", "org.jdom.", "org.mockito.", "io.dropwizard.", "com.mysema.query.",
                          "org.flywaydb.", "com.thoughtworks.xstream.", "org.glassfish.tyrus.", "com.jme3.",

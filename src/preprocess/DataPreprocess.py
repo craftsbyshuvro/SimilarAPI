@@ -26,7 +26,7 @@ class DataPreprocess:
             if "UNKNOWN" in invoked_method or invoked_method is None or invoked_method == '':
                 continue
 
-            invoked_method = invoked_method.replace("()", "").replace(":", ".")
+            # invoked_method = invoked_method.replace("()", "").replace(":", ".")
 
             pre_processed_data.append({'file_path': row['file_path'],
                                        'declared_method': row['declared_method'],
@@ -68,7 +68,7 @@ class DataPreprocess:
             if comment is None:
                 continue
 
-            method_name = self.obj_text_preprocess.process_api_name(method_name)
+            method_name = self.obj_text_preprocess.process_method_name(method_name)
 
             pre_processed_data.append({'file_path': row['file_path'],
                                        'method_name': method_name,
@@ -91,3 +91,28 @@ class DataPreprocess:
         pre_processed_df = self.preprocess_method_comment()
         comment = pd.DataFrame(pre_processed_df['comment'])
         return comment
+
+    def preprocess_input_data(self, input_data):
+        source_api_name_fully_qualified = input_data['source_api_name_fully_qualified']
+        source_api_description = input_data['source_api_description']
+
+        source_api_name_fully_qualified_processed = self.obj_text_preprocess.process_fully_qualified_api_name(
+            source_api_name_fully_qualified)
+        source_api_description_processed = self.get_first_line_after_preprocess([source_api_description])
+
+        target_api_name_fully_qualified = input_data['target_api_name_fully_qualified']
+        target_api_description = input_data['target_api_description']
+
+        target_api_name_fully_qualified_processed = self.obj_text_preprocess.process_fully_qualified_api_name(
+            target_api_name_fully_qualified)
+        target_api_description_processed = self.get_first_line_after_preprocess([target_api_description])
+
+        processed_input_data = {'source_api_name_fully_qualified_processed': source_api_name_fully_qualified_processed,
+                      'source_api_description_processed': source_api_description_processed,
+                      'target_api_name_fully_qualified_processed': target_api_name_fully_qualified_processed,
+                      'target_api_description_processed': target_api_description_processed,
+                      'source_api_name_fully_qualified_raw' : source_api_name_fully_qualified,
+                      'target_api_name_fully_qualified_raw': target_api_name_fully_qualified
+                      }
+
+        return processed_input_data
