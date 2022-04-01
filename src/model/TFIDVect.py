@@ -1,27 +1,34 @@
+import joblib
 from scipy import spatial
-from tabulate import tabulate
-import pandas as pd
-from src.preprocess.DataPreprocess import DataPreprocess
 from sklearn.feature_extraction.text import TfidfVectorizer
-import numpy as np
+
+from src.config import AppConfig
+from src.preprocess.DataPreprocess import DataPreprocess
 
 
 class TFIDVect:
     def __init__(self):
         self.pre_process_service = DataPreprocess()
 
-    def embed_method_name(self, input_data):
-        source_method_name = input_data['source_api_name_fully_qualified_processed']
-        target_method_name = input_data['target_api_name_fully_qualified_processed']
-
+    def embed_method_name(self):
         method_name = self.pre_process_service.get_preprocessed_method_name()
         method_names = list(method_name['method_name'])
 
         vectorizer = TfidfVectorizer()
-        vector = vectorizer.fit_transform(method_names)
+        vectorizer.fit_transform(method_names)
 
-        source_api = vectorizer.transform([source_method_name])
-        target_api = vectorizer.transform([target_method_name])
+        joblib.dump(vectorizer, AppConfig.TFID_MODEL_PATH_METHOD_NAME)
+
+        print('TFID Method Name vector trained and saved successfully')
+
+    def get_method_name_similarity(self, input_data):
+        method_name_vectorizer = joblib.load(AppConfig.TFID_MODEL_PATH_METHOD_NAME)
+
+        source_method_name = input_data['source_api_name_fully_qualified_processed']
+        target_method_name = input_data['target_api_name_fully_qualified_processed']
+
+        source_api = method_name_vectorizer.transform([source_method_name])
+        target_api = method_name_vectorizer.transform([target_method_name])
 
         source_api = source_api.toarray()[0]
         target_api = target_api.toarray()[0]
@@ -30,18 +37,26 @@ class TFIDVect:
 
         return cosine_similarity
 
-    def embed_method_comment(self, input_data):
-        source_method_comment = input_data['source_api_description_processed']
-        target_method_comment = input_data['target_api_description_processed']
-
+    def embed_method_comment(self):
         method_comment = self.pre_process_service.get_preprocessed_method_comment()
         method_comments = list(method_comment['comment'])
 
         vectorizer = TfidfVectorizer()
-        vector = vectorizer.fit_transform(method_comments)
+        vectorizer.fit_transform(method_comments)
 
-        source_api = vectorizer.transform([source_method_comment])
-        target_api = vectorizer.transform([target_method_comment])
+        joblib.dump(vectorizer, AppConfig.TFID_MODEL_PATH_METHOD_COMMENT)
+
+        print('TFID Method Comment vector trained and saved successfully')
+
+    def get_method_comment_similarity(self, input_data):
+        method_comment_vectorizer = joblib.load(AppConfig.TFID_MODEL_PATH_METHOD_COMMENT)
+
+        source_method_comment = input_data['source_api_description_processed']
+        target_method_comment = input_data['target_api_description_processed']
+
+        source_api = method_comment_vectorizer.transform([source_method_comment])
+        target_api = method_comment_vectorizer.transform([target_method_comment])
+
         source_api = source_api.toarray()[0]
         target_api = target_api.toarray()[0]
 

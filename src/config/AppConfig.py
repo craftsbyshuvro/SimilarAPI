@@ -4,6 +4,15 @@ ALPHA = 0.3  # API Sequence Similarity Weight
 BETA = 0.5  # Method Name Similarity Weight
 GAMMA = 0.2  # Method Comment Similarity Weight
 
+
+# Saving Model
+SKIP_GRAM_MODEL_PATH_API_SEQ = 'saved_model/skipgram_api_seq.model'
+
+TFID_MODEL_PATH_METHOD_NAME = 'saved_model/tfid_method_name.pkl'
+
+TFID_MODEL_PATH_METHOD_COMMENT = 'saved_model/tfid_method_comment.pkl'
+
+
 LIBRARY_COMMON_PREFIX = ["org.geotools.", "org.apache.bcel.", "org.atmosphere.", "org.springframework.xd.",
                          "org.jdom2.", "org.jdom.", "org.mockito.", "io.dropwizard.", "com.mysema.query.",
                          "org.flywaydb.", "com.thoughtworks.xstream.", "org.glassfish.tyrus.", "com.jme3.",

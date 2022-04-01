@@ -1,5 +1,7 @@
+from scipy import spatial
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 import warnings
+
 warnings.filterwarnings("ignore", category=FutureWarning)
 
 
@@ -11,10 +13,15 @@ class TestClass:
             'And this is the third one.',
             'Is this the first document?']
 
-        vectorizer = CountVectorizer()
+        vectorizer = TfidfVectorizer()
 
+        # embed corpus in vector space
         X = vectorizer.fit_transform(corpus)
-        print(vectorizer.get_feature_names())
-        print(X.toarray())
 
-        print(vectorizer.transform(['not in any of the document second second']).toarray())
+        # Getting vector for source and target api using embedded corpus
+        source_api = vectorizer.transform(['not in any of the document second']).toarray()
+        target_api = vectorizer.transform(['not in any of the document second second']).toarray()
+
+        cosine_similarity = 1 - spatial.distance.cosine(source_api, target_api)
+
+        print(cosine_similarity)
