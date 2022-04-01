@@ -108,11 +108,27 @@ class DataPreprocess:
         target_api_description_processed = self.get_first_line_after_preprocess([target_api_description])
 
         processed_input_data = {'source_api_name_fully_qualified_processed': source_api_name_fully_qualified_processed,
-                      'source_api_description_processed': source_api_description_processed,
-                      'target_api_name_fully_qualified_processed': target_api_name_fully_qualified_processed,
-                      'target_api_description_processed': target_api_description_processed,
-                      'source_api_name_fully_qualified_raw' : source_api_name_fully_qualified,
-                      'target_api_name_fully_qualified_raw': target_api_name_fully_qualified
-                      }
+                                'source_api_description_processed': source_api_description_processed,
+                                'target_api_name_fully_qualified_processed': target_api_name_fully_qualified_processed,
+                                'target_api_description_processed': target_api_description_processed,
+                                'source_api_name_fully_qualified_raw': source_api_name_fully_qualified,
+                                'target_api_name_fully_qualified_raw': target_api_name_fully_qualified
+                                }
 
         return processed_input_data
+
+    def get_preprocesed_api_names(self):
+        api_names_prior_comment = self.db_service.get_api_names_with_prior_comment()
+        pre_processed_data = list()
+        for index, row in api_names_prior_comment.iterrows():
+            invoked_method = str(row['invoked_method']).strip()
+
+            invoked_method = self.obj_text_preprocess.process_fully_qualified_api_name(invoked_method)
+
+            pre_processed_data.append({'file_path': row['file_path'],
+                                       'invoked_method': invoked_method})
+
+        pre_processed_df = pd.DataFrame(pre_processed_data)
+        pre_processed_df = pre_processed_df.groupby('file_path').agg(lambda x: ' '.join(x))
+
+        return pre_processed_df

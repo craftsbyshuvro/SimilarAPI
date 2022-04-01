@@ -12,5 +12,8 @@ class TrainModel:
     def embed_method_name(self):
         self.obj_tfid.embed_method_name()
 
+    def embed_method_api_name(self):
+        self.obj_tfid.embed_method_api_name()
+
     def embed_method_comment(self):
         self.obj_tfid.embed_method_comment()

@@ -25,3 +25,10 @@ class DBService:
     def get_all_import_statement(self):
         import_statement_df = pd.read_sql_query("SELECT * from import_statement", self.con)
         return import_statement_df
+
+    def get_api_names_with_prior_comment(self):
+        api_names = pd.read_sql_query("select ac.file_path, ac.declared_method, ac.invoked_method from "
+                                      "api_call_sequence as ac join method_comment_details as mcd on ac.file_path = "
+                                      "mcd.file_path and ac.declared_method = mcd.method_name where mcd.comment_type "
+                                      "= 'Javadoc'", self.con)
+        return api_names

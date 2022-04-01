@@ -46,7 +46,7 @@ class TFIDVect:
 
         joblib.dump(vectorizer, AppConfig.TFID_MODEL_PATH_METHOD_COMMENT)
 
-        print('TFID Method Comment vector trained and saved successfully')
+        print('TFID Method Comment vector trained and saved successfully', end="\n\n")
 
     def get_method_comment_similarity(self, input_data):
         method_comment_vectorizer = joblib.load(AppConfig.TFID_MODEL_PATH_METHOD_COMMENT)
@@ -63,3 +63,14 @@ class TFIDVect:
         cosine_similarity = 1 - spatial.distance.cosine(source_api, target_api)
 
         return cosine_similarity
+
+    def embed_method_api_name(self):
+        method_name = self.pre_process_service.get_preprocesed_api_names()
+        invoked_methods = list(method_name['invoked_method'])
+
+        vectorizer = TfidfVectorizer()
+        vectorizer.fit_transform(invoked_methods)
+
+        joblib.dump(vectorizer, AppConfig.TFID_MODEL_PATH_METHOD_NAME)
+
+        print('TFID Method Name vector trained and saved successfully')
