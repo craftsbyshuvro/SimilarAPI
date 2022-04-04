@@ -1,6 +1,7 @@
 import joblib
 from scipy import spatial
 from sklearn.feature_extraction.text import TfidfVectorizer
+from tabulate import tabulate
 
 from src.config import AppConfig
 from src.preprocess.DataPreprocess import DataPreprocess

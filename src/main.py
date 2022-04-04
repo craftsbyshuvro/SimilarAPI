@@ -5,10 +5,10 @@ if __name__ == '__main__':
 
     obj_train_model = TrainModel()
 
-    obj_train_model.train_skip_gram()
+    # obj_train_model.train_skip_gram()
     # obj_train_model.embed_method_name()
-    obj_train_model.embed_method_api_name()
-    obj_train_model.embed_method_comment()
+    # obj_train_model.embed_method_api_name()
+    # obj_train_model.embed_method_comment()
 
     input_data = {'source_api_name_fully_qualified': 'com.google.common.base.Joiner:on()',
                   'source_api_description': 'Returns a joiner which automatically places separator between consecutive elements.',

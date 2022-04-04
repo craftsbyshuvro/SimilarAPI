@@ -52,8 +52,8 @@ class DataPreprocess:
                     processed_text = processed_text.strip()
                     return processed_text
 
-    def preprocess_method_comment(self):
-        method_comment_detail = self.db_service.get_all_method_comment_detail()
+    def get_preprocessed_method_name(self):
+        method_comment_detail = self.db_service.get_all_method_name()
 
         pre_processed_data = list()
         for index, row in method_comment_detail.iterrows():
@@ -77,18 +77,35 @@ class DataPreprocess:
         pre_processed_df = pd.DataFrame(pre_processed_data)
         pre_processed_df = pre_processed_df.groupby('file_path').agg(lambda x: ' '.join(x))
 
-        # pre_processed_df["method_name"] = pre_processed_df["method_name"].apply(lambda x: x.replace(".", ""))
-        # pre_processed_df["comment"] = pre_processed_df["comment"].apply(lambda x: x.replace(".", ""))
-
-        return pre_processed_df
-
-    def get_preprocessed_method_name(self):
-        pre_processed_df = self.preprocess_method_comment()
         method_name = pd.DataFrame(pre_processed_df['method_name'])
         return method_name
 
     def get_preprocessed_method_comment(self):
-        pre_processed_df = self.preprocess_method_comment()
+
+        method_comment_detail = self.db_service.get_all_method_comment()
+
+        pre_processed_data = list()
+        for index, row in method_comment_detail.iterrows():
+            method_comment = str(row['comment']).strip()
+            method_name = str(row['method_name']).strip()
+
+            method_comment = re.sub(r'[^ \nA-Za-z0-9]+', '', method_comment)
+            method_comment = method_comment.splitlines()
+
+            comment = self.get_first_line_after_preprocess(method_comment)
+
+            if comment is None:
+                continue
+
+            method_name = self.obj_text_preprocess.process_method_name(method_name)
+
+            pre_processed_data.append({'file_path': row['file_path'],
+                                       'method_name': method_name,
+                                       'comment': comment})
+
+        pre_processed_df = pd.DataFrame(pre_processed_data)
+        pre_processed_df = pre_processed_df.groupby('file_path').agg(lambda x: ' '.join(x))
+
         comment = pd.DataFrame(pre_processed_df['comment'])
         return comment
 

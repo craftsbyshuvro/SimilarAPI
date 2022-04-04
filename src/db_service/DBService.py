@@ -17,9 +17,16 @@ class DBService:
                                                  "api_call_sequence", self.con)
         return api_call_sequence_df
 
-    def get_all_method_comment_detail(self):
-        method_comment_details_df = pd.read_sql_query("SELECT * from method_comment_details where comment is not null "
-                                                      "and comment_type = 'Javadoc'", self.con)
+    def get_all_method_name(self):
+        method_comment_details_df = pd.read_sql_query("SELECT mcd.* FROM method_comment_details as mcd Where comment "
+                                                      "is not null and comment_type = 'Javadoc' group by "
+                                                      "mcd.file_path, mcd.method_name", self.con)
+        return method_comment_details_df
+
+    def get_all_method_comment(self):
+        method_comment_details_df = pd.read_sql_query("SELECT mcd.* FROM method_comment_details as mcd Where comment "
+                                                      "is not null and comment_type = 'Javadoc' group by "
+                                                      "mcd.file_path, mcd.comment", self.con)
         return method_comment_details_df
 
     def get_all_import_statement(self):
@@ -28,7 +35,7 @@ class DBService:
 
     def get_api_names_with_prior_comment(self):
         api_names = pd.read_sql_query("select ac.file_path, ac.declared_method, ac.invoked_method from "
-                                      "api_call_sequence as ac join method_comment_details as mcd on ac.file_path = "
-                                      "mcd.file_path and ac.declared_method = mcd.method_name where mcd.comment_type "
-                                      "= 'Javadoc'", self.con)
+                                      "api_call_sequence as ac where(SELECT Count(*) from method_comment_details as "
+                                      "mcd where ac.file_path = mcd.file_path AND ac.declared_method = "
+                                      "mcd.method_name and mcd.comment_type = 'Javadoc') > 0", self.con)
         return api_names
