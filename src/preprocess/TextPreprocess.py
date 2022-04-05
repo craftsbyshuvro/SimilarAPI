@@ -69,7 +69,7 @@ class TextPreprocess:
 
     def process_fully_qualified_api_name(self, fully_q_api_name):
 
-        fully_q_api_name = str(fully_q_api_name).replace(':', '.')
+        # fully_q_api_name = str(fully_q_api_name).replace(':', '.')
 
         api_name_section = fully_q_api_name.split(".")
         api_name_section = api_name_section[-2:]
