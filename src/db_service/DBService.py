@@ -34,8 +34,10 @@ class DBService:
         return import_statement_df
 
     def get_api_names_with_prior_comment(self):
-        api_names = pd.read_sql_query("select ac.file_path, ac.declared_method, ac.invoked_method from "
-                                      "api_call_sequence as ac where(SELECT Count(*) from method_comment_details as "
-                                      "mcd where ac.file_path = mcd.file_path AND ac.declared_method = "
-                                      "mcd.method_name and mcd.comment_type = 'Javadoc') > 0", self.con)
+        api_names = pd.read_sql_query("SELECT ac.id, ac.file_path, ac.declared_method, ac.invoked_method FROM "
+                                      "api_call_sequence AS ac JOIN ( SELECT metho_c_d.file_path, "
+                                      "metho_c_d.method_name FROM method_comment_details AS metho_c_d WHERE "
+                                      "metho_c_d.comment_type = 'Javadoc' GROUP BY metho_c_d.file_path, "
+                                      "metho_c_d.method_name ) AS mcd ON ac.file_path = mcd.file_path AND "
+                                      "ac.declared_method = mcd.method_name", self.con)
         return api_names
