@@ -7,7 +7,10 @@ if __name__ == '__main__':
 
     obj_train_model.train_skip_gram()
     obj_train_model.embed_method_name()
+
+    # This is what i understand
     # obj_train_model.embed_method_api_name()
+
     obj_train_model.embed_method_comment()
 
     input_data = {'source_api_name_fully_qualified': 'com.google.common.base.Joiner.on()',
