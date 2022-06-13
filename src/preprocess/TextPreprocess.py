@@ -83,3 +83,8 @@ class TextPreprocess:
             processed_api_name = processed_api_name.strip().lower()
 
         return processed_api_name
+
+    def preprocess_test_api_name(self, api_name):
+        api_name = re.sub(r'\([^)]*\)', '', api_name)
+        api_name = api_name + '()'
+        return api_name

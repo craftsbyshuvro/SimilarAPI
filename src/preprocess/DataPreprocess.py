@@ -149,3 +149,13 @@ class DataPreprocess:
         pre_processed_df = pre_processed_df.groupby('file_path').agg(lambda x: ' '.join(x))
 
         return pre_processed_df
+
+    def process_ground_truth(self, ground_truth_path):
+        ground_truth = pd.read_csv(ground_truth_path)
+        processed_ground_truth = []
+        for index, data in ground_truth.iterrows():
+            pro_data = {}
+            pro_data['source_api'] = str(data['source_api']).split('(', 1)[0]
+            pro_data['target_api'] = str(data['target_api']).split('(', 1)[0]
+            processed_ground_truth.append(pro_data)
+        return processed_ground_truth
