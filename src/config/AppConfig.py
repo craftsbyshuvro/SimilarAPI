@@ -1,5 +1,7 @@
-# DB_CON_STRING = 'D:\Study\Final Project\Applications\MyFirstPlugin\SQLiteDB\SimilarAPISample.db'
-DB_CON_STRING = 'D:\Study\Final Project\Dataset\cloud\SimilarAPI_All.db'
+# Original
+# DB_CON_STRING = 'D:\Study\Final Project\Dataset\cloud\SimilarAPI_All.db'
+# Test
+DB_CON_STRING = 'D:\Study\Final Project\Dataset\cloud\PlayDB.db'
 
 ALPHA = 0.3  # API Sequence Similarity Weight
 BETA = 0.5  # Method Name Similarity Weight
