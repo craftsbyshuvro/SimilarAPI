@@ -22,8 +22,13 @@ class TFIDVect:
 
         print('TFID Method Name vector trained and saved successfully')
 
-    def get_method_name_similarity(self, input_data):
-        method_name_vectorizer = joblib.load(AppConfig.TFID_MODEL_PATH_METHOD_NAME)
+    def get_method_name_similarity(self, input_data, model_vect):
+
+        if model_vect is None:
+            method_name_vectorizer = joblib.load(AppConfig.TFID_MODEL_PATH_METHOD_NAME)
+        else:
+            method_name_vectorizer = model_vect
+
 
         source_method_name = input_data['source_api_name_fully_qualified_processed']
         target_method_name = input_data['target_api_name_fully_qualified_processed']
@@ -49,8 +54,12 @@ class TFIDVect:
 
         print('TFID Method Comment vector trained and saved successfully', end="\n\n")
 
-    def get_method_comment_similarity(self, input_data):
-        method_comment_vectorizer = joblib.load(AppConfig.TFID_MODEL_PATH_METHOD_COMMENT)
+    def get_method_comment_similarity(self, input_data, model_vect = None):
+
+        if model_vect is None:
+            method_comment_vectorizer = joblib.load(AppConfig.TFID_MODEL_PATH_METHOD_COMMENT)
+        else:
+            method_comment_vectorizer = model_vect
 
         source_method_comment = input_data['source_api_description_processed']
         target_method_comment = input_data['target_api_description_processed']

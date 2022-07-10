@@ -1,6 +1,8 @@
 import itertools
 from operator import itemgetter
 
+import joblib
+from gensim.models import Word2Vec
 from tqdm import tqdm
 
 from src.config import AppConfig
@@ -13,28 +15,41 @@ import re
 from src.preprocess.DataPreprocess import DataPreprocess
 from src.preprocess.TextPreprocess import TextPreprocess
 from src.temp.GraphEmbed import GraphEmbed
+from datetime import datetime
 
 if __name__ == '__main__':
-    objge = GraphEmbed()
-    objge.embed()
-
-
-
+    # emb = GraphEmbed()
+    # emb.embed()
+    pass
 
     # ====================TRAIN=========================
-
-    # obj_train_model = TrainModel()
     #
+    # obj_train_model = TrainModel()
     # obj_train_model.train_skip_gram()
+
     # # obj_train_model.embed_method_name()
     #
-    # # This is what i understand
+    # This is what i understand
     # obj_train_model.embed_method_api_name()
+
     #
     # obj_train_model.embed_method_comment()
 
     # ====================TEST=========================
 
+    # graph_skip_gram_model = Word2Vec.load(AppConfig.GRAPH_EMBEDD_MODEL_PATH_API_SEQ)
+    # method_name_vectorizer = joblib.load(AppConfig.TFID_MODEL_PATH_METHOD_NAME)
+    #
+    # without_graph_skip_gram_model = Word2Vec.load(AppConfig.SKIP_GRAM_MODEL_PATH_API_SEQ)
+    #
+    # graph_dict_data = ''
+    # with open('saved_model/dege_str_number.txt') as f:
+    #     graph_dict_data = f.read()
+    #
+    #
+    #
+    #
+    #
     # obj_text_preprocess = TextPreprocess()
     # obj_data_preprocess = DataPreprocess()
     # obj_combined_performance = CombinedModel()
@@ -65,7 +80,7 @@ if __name__ == '__main__':
     #                       'target_api_description': test_t['api_description']
     #                       }
     #         try:
-    #             overall_similarity = obj_combined_performance.get_combined_performance(input_data)
+    #             overall_similarity = obj_combined_performance.get_combined_performance(graph_dict_data, graph_skip_gram_model, without_graph_skip_gram_model,method_name_vectorizer,input_data)
     #         except:
     #             overall_similarity = 0
     #
@@ -105,10 +120,10 @@ if __name__ == '__main__':
     #     all_test_results = all_test_results + sorted_result_sorted
     #
     # all_test_results_df = pd.DataFrame(all_test_results)
-    # all_test_results_df.to_csv("D:\Study\Final Project\Dataset\Ground Truth\GoogleLangCommonLang\similarity_score.csv",
+    # all_test_results_df.to_csv("D:\Study\Final Project\Dataset\Ground Truth\ResultSemifianl\similarity_scoreComparisonGround_author.csv",
     #                            index=False)
     #
     # comparison_with_ground_result = pd.DataFrame(comparison_with_ground_result)
     # comparison_with_ground_result.to_csv(
-    #     'D:\Study\Final Project\Dataset\Ground Truth\GoogleLangCommonLang\comparisonWithGroundTruth.csv', index=False)
+    #     'D:\Study\Final Project\Dataset\Ground Truth\ResultSemifianl\ComparisonGround_author.csv', index=False)
     # print("FINISHED")

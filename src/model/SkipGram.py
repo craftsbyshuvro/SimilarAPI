@@ -12,11 +12,14 @@ class SkipGram:
         self.pre_process_service = DataPreprocess()
         self.embeddingsSize = 500
 
-    def get_api_seq_similarity(self, input_data):
+    def get_api_seq_similarity(self, input_data, model_vect = None):
         source_api = input_data['source_api_name_fully_qualified_raw']
         target_api = input_data['target_api_name_fully_qualified_raw']
 
-        skip_gram_model = Word2Vec.load(AppConfig.SKIP_GRAM_MODEL_PATH_API_SEQ)
+        if model_vect is None:
+            skip_gram_model = Word2Vec.load(AppConfig.SKIP_GRAM_MODEL_PATH_API_SEQ)
+        else:
+            skip_gram_model = model_vect
 
         source_api_vector = skip_gram_model.wv[source_api]
         target_api_vector = skip_gram_model.wv[target_api]
